@@ -4,7 +4,6 @@ class RoomController {
     async getRooms(request, response) {
         try{
             const rooms = await RoomService.getRooms();
-            console.log(rooms)
             return response.json(rooms)
         }
         catch(e){

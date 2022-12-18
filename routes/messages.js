@@ -1,21 +1,13 @@
 const { Router } = require("express");
-const fs = require('fs');
-const path = require('path');
 const router = new Router;
+const MessageController = require('../controllers/MessageController');
 
-router.get('/', async (request, response) => {
-    const dataJSON = await new Promise((resolve,reject) => {
-        fs.readFile(path.join(__dirname,'../db','db.json'),'utf8', (err,data) => {
-            if(err){
-                reject(err)
-            }
-            resolve(data) ;
-        })
-    })
+router.get('/:id', MessageController.getMessages)
+router.post('/create', MessageController.createMessage)
 
-    const messages = JSON.parse(dataJSON).messages
 
-    response.json(messages)
-})
+
+// router.delete('/', MessageController.deleteMessage)
+
 
 module.exports = router;
