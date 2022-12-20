@@ -10,13 +10,12 @@ const webSocketsInital = (server) => {
 
                 const newMessage = JSON.parse(data)
 
-                await MessageService.createMessage({...newMessage,userId:123})
-                const messages = JSON.stringify(await MessageService.getMessages(newMessage.roomId))
+                const message = JSON.stringify(await MessageService.createMessage({...newMessage,userId:123}))
 
                 wss.clients.forEach((client) => {
 
                     if (client.readyState === webSocket.OPEN) {
-                      client.send(messages);
+                      client.send(message);
                     }
                 });
             })
