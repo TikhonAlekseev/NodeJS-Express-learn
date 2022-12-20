@@ -5,7 +5,7 @@ class MessageService {
         if(!text || !roomId || !userId){
             throw new Error({ message:"parameter 'name' is invalid" })
         }
-        await Message.create({ text, roomId, userId } )
+        return await Message.create({ text, roomId, userId } )
     }
     async getMessages(roomId) {
         const messages = await Message.find({roomId})
