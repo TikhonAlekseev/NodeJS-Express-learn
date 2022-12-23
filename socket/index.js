@@ -15,7 +15,7 @@ const webSocketsInital = (server) => {
                 wss.clients.forEach((client) => {
 
                     if (client.readyState === webSocket.OPEN) {
-                      client.send(message);
+                        client.send(message);
                     }
                 });
             })
