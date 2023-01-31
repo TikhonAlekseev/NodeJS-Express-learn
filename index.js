@@ -13,9 +13,12 @@ const webSocketsInital = require('./socket/index')
 const app = express();
 const server = http.createServer(app)
 
-app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+}));
 
 webSocketsInital(server);
 

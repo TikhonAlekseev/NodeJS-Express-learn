@@ -7,9 +7,9 @@ const JWT_REFRESH_SECRET_KEY = "JWT_REFRESH_SECRET_KEY";
 
 
 class TokenService {
-    generateToken(payload){
-        const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET_KEY, { expiresIn:'30m' })
-        const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET_KEY, { expiresIn:'30d' });
+    generateToken(payload) {
+        const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET_KEY, { expiresIn: '30m' })
+        const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET_KEY, { expiresIn: '30d' });
 
         return {
             accessToken,
@@ -17,7 +17,7 @@ class TokenService {
         }
     }
 
-    validateAccessToken(payload){
+    validateAccessToken(payload) {
         try {
             const userData = jwt.verify(payload, JWT_ACCESS_SECRET_KEY);
             return userData;
@@ -26,7 +26,7 @@ class TokenService {
         }
     }
 
-    validateRefreshToken(payload){
+    validateRefreshToken(payload) {
         try {
             const userData = jwt.verify(payload, JWT_REFRESH_SECRET_KEY);
             return userData;
@@ -36,23 +36,23 @@ class TokenService {
     }
 
     async saveToken(userId, refreshToken) {
-        const tokenData = await Token.findOne({userId})
+        const tokenData = await Token.findOne({ userId })
 
-        if(tokenData){
+        if (tokenData) {
             tokenData.refreshToken = refreshToken;
             return tokenData.save();
         }
 
-        const token = await Token.create({userId,refreshToken})
+        const token = await Token.create({ userId, refreshToken })
         return token
     }
 
-    async deleteToken(refreshToken){
-        await Token.deleteOne({refreshToken})
+    async deleteToken(refreshToken) {
+        await Token.deleteOne({ refreshToken })
     }
 
-    async findToken(refreshToken){
-        return await Token.findOne({refreshToken})
+    async findToken(refreshToken) {
+        return await Token.findOne({ refreshToken })
     }
 
 }

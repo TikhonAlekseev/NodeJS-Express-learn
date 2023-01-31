@@ -5,23 +5,23 @@ class RoomService {
 
     async getRooms() {
         const rooms = await Room.find();
-        const roomsFormats = rooms.map(room =>( { id:room._id.toString(), name:room.name }))
+        const roomsFormats = rooms.map(room => ({ id: room._id.toString(), name: room.name }))
         return roomsFormats
     }
 
     async createRoom(name) {
-        if(!name){
-            throw new Error({message:"parameter 'name' is invalid"})
+        if (!name) {
+            throw new Error({ message: "parameter 'name' is invalid" })
         }
 
-        await Room.create( { name } )
+        await Room.create({ name })
     }
 
     async deleteRoom(id) {
-        if(!id){
-            throw new Error({ message:"parameter 'id' is not exists" } )
+        if (!id) {
+            throw new Error({ message: "parameter 'id' is not exists" })
         }
-        await Message.remove({roomId:id})
+        await Message.remove({ roomId: id })
         await Room.findByIdAndDelete(id)
     }
 }

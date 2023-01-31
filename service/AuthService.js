@@ -4,39 +4,39 @@ const TokenService = require('./TokenService');
 const UserDto = require('../dto/user-dto');
 
 class AuthService {
-    async registration({username, password, email}) {
-        const candidate = await User.findOne({email})
+    async registration({ username, password, email }) {
+        const candidate = await User.findOne({ email })
 
-        if(candidate){
+        if (candidate) {
             throw new Error("Пользователь с такой почтой уже зарегистрирован!")
         }
 
         const hashPassword = await bcrypt.hash(password, 3)
         const user = await User.create({ username, password: hashPassword, email })
         const userDto = new UserDto(user);
-        const tokens = TokenService.generateToken({...userDto});
+        const tokens = TokenService.generateToken({ ...userDto });
         await TokenService.saveToken(userDto.id, tokens.refreshToken)
 
-        return {...tokens, ...userDto}
+        return { ...tokens, ...userDto }
     }
     async login({ email, password }) {
-        const user = await User.findOne({email})
+        const user = await User.findOne({ email })
 
-        if(!user){
+        if (!user) {
             throw new Error("Пользователь не зарегистрирован!")
         }
 
-        const isVerifyPassword = await bcrypt.compare(password, user.password )
+        const isVerifyPassword = await bcrypt.compare(password, user.password)
 
-        if(!isVerifyPassword){
+        if (!isVerifyPassword) {
             throw new Error("Введен неверный пароль или логин")
         }
 
         const userDto = new UserDto(user);
-        const tokens = TokenService.generateToken({...userDto});
+        const tokens = TokenService.generateToken({ ...userDto });
         await TokenService.saveToken(userDto.id, tokens.refreshToken)
 
-        return {...tokens, ...userDto}
+        return { ...tokens, ...userDto }
     }
 
     async logout(refreshToken) {
@@ -44,18 +44,19 @@ class AuthService {
     }
 
     async updateTokens(refreshToken) {
-        const userData = await TokenService.validateRefreshToken({refreshToken})
-        const tokensIsFromDb = TokenService.findToken(refreshToken);
+        const userData = await TokenService.validateRefreshToken(refreshToken)
+        const tokensIsFromDb = await TokenService.findToken(refreshToken);
 
-        if(!refreshToken || !userData || !tokensIsFromDb){
+        if (!refreshToken || !userData || !tokensIsFromDb) {
             throw new Error('Пользователь не авторизован')
         }
-        const user = User.findById(userData.id)
+
+        const user = await User.findById(userData.id)
         const userDto = new UserDto(user);
-        const tokens = TokenService.generateToken({...userDto});
+        const tokens = TokenService.generateToken({ ...userDto });
         await TokenService.saveToken(userDto.id, tokens.refreshToken)
 
-        return {...tokens, ...userDto}
+        return { ...tokens, ...userDto }
     }
 
     async getUsers() {

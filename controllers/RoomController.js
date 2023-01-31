@@ -2,35 +2,35 @@ const RoomService = require('../service/RoomService')
 
 class RoomController {
     async getRooms(request, response) {
-        try{
+        try {
             const rooms = await RoomService.getRooms();
             return response.json(rooms)
         }
-        catch(e){
-            response.status(500).json({ message:"Проблема с запросом всех комнат", error: e })
+        catch (e) {
+            response.status(500).json({ message: "Проблема с запросом всех комнат", error: e })
         }
     }
 
     async createRoom(request, response) {
 
-        try{
+        try {
             const { name } = request.body;
             await RoomService.createRoom(name)
-            return response.json({ message:"room is created"})
+            return response.json({ message: "room is created" })
         }
-        catch(e){
-            response.status(500).json({message:"Ошибка записи в базу данных", error: e})
+        catch (e) {
+            response.status(500).json({ message: "Ошибка записи в базу данных", error: e })
         }
     }
 
     async deleteRoom(request, response) {
-       
+
         try {
             const { id } = request.params;
             await RoomService.deleteRoom(id)
-            response.json({message:'Комната успешно удалена!'})
+            response.json({ message: 'Комната успешно удалена!' })
         } catch (error) {
-            response.status(500).json({message:"Ошибка удаления", error: e})
+            response.status(500).json({ message: "Ошибка удаления", error: e })
         }
     }
 }
