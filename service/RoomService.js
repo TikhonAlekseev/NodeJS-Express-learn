@@ -1,3 +1,4 @@
+const Message = require("../models/message");
 const Room = require("../models/room");
 
 class RoomService {
@@ -20,6 +21,7 @@ class RoomService {
         if(!id){
             throw new Error({ message:"parameter 'id' is not exists" } )
         }
+        await Message.remove({roomId:id})
         await Room.findByIdAndDelete(id)
     }
 }
