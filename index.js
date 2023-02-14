@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
@@ -9,7 +8,9 @@ const roomsRouter = require('./routes/rooms')
 const messagesRouter = require('./routes/messages')
 const authRouter = require('./routes/auth')
 
-const webSocketsInital = require('./socket/index')
+const webSocketsInitial = require('./socket/index');
+const { DB_URL, PORT } = require('./config');
+
 const app = express();
 const server = http.createServer(app)
 
@@ -20,19 +21,18 @@ app.use(cors({
     credentials: true,
 }));
 
-webSocketsInital(server);
+webSocketsInitial(server);
 
-//routers
 app.use('/api/auth', authRouter);
 app.use('/api/rooms', roomsRouter);
 app.use('/api/messages', messagesRouter);
 
 mongoose
-    .connect(process.env.DB_URL)
+    .connect(DB_URL)
     .then(() => {
         console.log('MongoDB is running')
-        server.listen(process.env.PORT, () => {
-            console.log('server is running ' + process.env.PORT)
+        server.listen(PORT, () => {
+            console.log('server is running ' + PORT)
         })
     })
 

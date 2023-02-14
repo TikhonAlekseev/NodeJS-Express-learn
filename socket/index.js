@@ -4,8 +4,7 @@ const User = require('../models/user');
 const UserDto = require('../dto/user-dto');
 const MessageDto = require('../dto/message-dto');
 
-
-const webSocketsInital = (server) => {
+const webSocketsInitial = (server) => {
   const wss = new webSocket.WebSocketServer({ server });
 
   wss.on('connection', (socket, request) => {
@@ -30,4 +29,4 @@ const webSocketsInital = (server) => {
   })
 }
 
-module.exports = webSocketsInital;
+module.exports = webSocketsInitial;
