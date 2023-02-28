@@ -1,7 +1,10 @@
-import {Schema , model} from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const Room = new Schema({
-  name: { type: String, require: true }
-})
+  name: { 
+    type: String, 
+    require: true 
+  }
+});
 
-export default model('Room', Room)
+export default model('Room', Room);
